@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-h2&@j*#n6l&)k^ijlpi53ak^f38q$s90z&jxe!l=-cgsexzz7*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'tags',
     'profiles',
 ]
+
+# Use custom user model from the users app
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
