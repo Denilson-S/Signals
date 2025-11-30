@@ -48,6 +48,13 @@ INSTALLED_APPS = [
 # Use custom user model from the users app
 AUTH_USER_MODEL = 'users.User'
 
+# Django REST Framework
+INSTALLED_APPS += [
+    'rest_framework',
+]
+# Use custom user model from the users app
+AUTH_USER_MODEL = 'users.User'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
