@@ -16,13 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from posts.api import PostViewSet
-
-router = DefaultRouter()
-router.register(r'posts', PostViewSet, basename='post')
+from posts.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
+    path('', index, name='home'),
+    path("comments/", include("comments.urls")),
+    path("messages/", include("u_messages.urls")),
+    path("profiles/", include("profiles.urls")),
+    path("posts/", include("posts.urls")),
 ]

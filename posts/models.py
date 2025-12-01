@@ -4,6 +4,7 @@ from django.db import models
 class Post(models.Model):
     author = models.ForeignKey('users.User', on_delete=models.CASCADE)
     content = models.TextField()
+    tags = models.ManyToManyField('tags.Tag', related_name='tagged_posts', blank=True)
     likes = models.ManyToManyField('users.User', related_name='liked_posts', blank=True)
     shares = models.ManyToManyField('users.User', related_name='shared_posts', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
