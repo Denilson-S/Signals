@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from posts.views import index
+from posts.views import feed_view as feed
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index, name='home'),
+    path('', feed, name='home'),
     path("comments/", include("comments.urls")),
     path("messages/", include("u_messages.urls")),
     path("profiles/", include("profiles.urls")),

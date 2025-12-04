@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Signals{% endblock %}
+
+{% block content %}
+<!-- Feed -->
+{% for post in posts %}
+<div class="card mb-4 border-0 shadow-sm" style="border-radius: 10px;">
+    <div class="card-body p-3">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <div class="d-flex align-items-center">
+                <!-- Avatar -->
+                <div class="rounded-circle bg-secondary overflow-hidden me-2" style="width: 40px; height: 40px;">
+                    {% if post.author.profile.avatar %}
+                        <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.username }}" class="w-100 h-100 object-fit-cover">
+                    {% else %}
+                        <!-- Avatar Placeholder if no image -->
+                         <div class="w-100 h-100 d-flex justify-content-center align-items-center bg-light text-secondary">
+                            <i class="bi bi-person-fill fs-4"></i>
+                         </div>
+                    {% endif %}
+                </div>
+                
+                <!-- User Info -->
+                <div style="line-height: 1.2;">
+                    <h6 class="fw-bold mb-0">{{ post.author.get_full_name|default:post.author.username }}</h6>
+                    <small class="text-muted" style="font-size: 12px;">
+                        {{ post.created_at|timesince }} ago &middot; <i class="bi bi-globe-americas"></i>
+                    </small>
+                </div>
+            </div>
+            
+            <!-- Menu Button -->
+            <button class="btn btn-link text-body p-0 text-decoration-none">
+                <i class="bi bi-three-dots"></i>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="mb-2">
+            <p class="card-text mb-1">{{ post.content|linebreaksbr }}</p>
+            <!-- Static hashtags for style demo as we can't parse easily without filter, 
+                 or we assume content contains them. 
+                 Adding a dummy line if content doesn't have tags to match the "look" or just rely on content. 
+                 The prompt asked to follow details strictly. 
+                 If the post object doesn't have tags, we can't invent them, but the design should support them. 
+                 I'll add a class for hashtags styling if I could, but for now just standard text. -->
+        </div>
+
+        <!-- Stats -->
+        <div class="d-flex justify-content-between align-items-center py-2">
+            <div class="d-flex align-items-center">
+                <span class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-1" style="width: 18px; height: 18px; font-size: 10px;">
+                    <i class="bi bi-hand-thumbs-up-fill"></i>
+                </span>
+                <span class="text-muted small">{{ post.likes.count }}</span>
+            </div>
+            <div class="text-muted small">
+                <span class="me-2">{{ post.comments.count }} comment{{ post.comments.count|pluralize }}</span>
+                <span>{{ post.shares.count }} share{{ post.shares.count|pluralize }}</span>
+            </div>
+        </div>
+
+        <hr class="my-2 text-muted" style="opacity: 0.15;">
+
+        <!-- Actions -->
+        <div class="d-flex justify-content-between px-2">
+            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
+                <i class="bi bi-hand-thumbs-up"></i> Like
+            </button>
+            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
+                <i class="bi bi-chat-right"></i> Comment
+            </button>
+            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
+                <i class="bi bi-share"></i> Share
+            </button>
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="text-center py-5">
+    <i class="bi bi-journal-x display-4 text-muted"></i>
+    <p class="mt-3 text-muted">No posts available.</p>
+</div>
+{% endfor %}
+{% endblock %}

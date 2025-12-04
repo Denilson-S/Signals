@@ -3,9 +3,10 @@ from django import forms
 from .models import Post
 
 # Create your views here.
-def index(request):
+def feed_view(request):
+    """Página principal: Lista posts de todos."""
     posts = Post.objects.all().order_by('-created_at')
-    return render(request, 'posts/index.html', {'posts': posts})
+    return render(request, 'posts/feed.html', {'posts': posts})
 
 class PostForm(forms.ModelForm):
         class Meta:
@@ -18,7 +19,7 @@ def create_post(request):
         if form.is_valid():
             form.save()
             posts = Post.objects.all().order_by('-created_at')
-            return render(request, 'posts/index.html', {'posts': posts})
+            return render(request, 'posts/feed.html', {'posts': posts})
     else:
         form = PostForm()
     return render(request, 'posts/create.html', {'form': form})
