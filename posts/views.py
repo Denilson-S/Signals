@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django import forms
 from .models import Post
+from tags.models import Tag
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -9,6 +10,12 @@ def feed_view(request):
     """Página principal: Lista posts de todos."""
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'posts/feed.html', {'posts': posts})
+
+@login_required
+def tag_feed(request, tag_id):
+    tag = get_object_or_404(Tag, id=tag_id)
+    posts = Post.objects.filter(tags=tag).order_by('-created_at')
+    return render(request, 'posts/feed.html', {'posts': posts, 'current_tag': tag})
 
 class PostForm(forms.ModelForm):
     class Meta:

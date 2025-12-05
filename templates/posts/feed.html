@@ -3,6 +3,12 @@
 {% block title %}Home - Social{% endblock %}
 
 {% block content %}
+{% if current_tag %}
+<div class="mb-4">
+    <h3 class="fw-bold mb-0 profile-text-primary">#{{ current_tag.name }}</h3>
+    <span class="text-muted">Browsing posts tagged with {{ current_tag.name }}</span>
+</div>
+{% endif %}
 <!-- Feed -->
 {% for post in posts %}
 <div class="card mb-4 border-0 shadow-sm" style="border-radius: 10px;">
@@ -56,12 +62,13 @@
         <!-- Content -->
         <div class="mb-2">
             <p class="card-text mb-1">{{ post.content|linebreaksbr }}</p>
-            <!-- Static hashtags for style demo as we can't parse easily without filter, 
-                 or we assume content contains them. 
-                 Adding a dummy line if content doesn't have tags to match the "look" or just rely on content. 
-                 The prompt asked to follow details strictly. 
-                 If the post object doesn't have tags, we can't invent them, but the design should support them. 
-                 I'll add a class for hashtags styling if I could, but for now just standard text. -->
+            {% if post.tags.exists %}
+            <p class="card-text small">
+                {% for tag in post.tags.all %}
+                <a href="{% url 'tag_feed' tag.id %}" class="text-decoration-none text-primary fw-semibold me-1">#{{ tag.name }}</a>
+                {% endfor %}
+            </p>
+            {% endif %}
         </div>
 
         <!-- Stats -->
