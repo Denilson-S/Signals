@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Profile - Social{% endblock %}
+{% block title %}Profile - Signals{% endblock %}
 
 {% block content %}
 <div class="container py-4">
@@ -14,7 +14,7 @@
             </div>
 
             <!-- Profile Card -->
-            <div class="card border-0 shadow-sm profile-card overflow-hidden" style="border-radius: 16px;">
+            <div class="card border-0 shadow-sm profile-card overflow-hidden mb-4" style="border-radius: 16px;">
                 <!-- Banner Area -->
                 <div class="profile-banner" style="height: 180px;"></div>
                 
@@ -71,6 +71,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Security Card -->
+            <div class="card border-0 shadow-sm profile-card p-4" style="border-radius: 16px;">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="rounded-3 d-flex justify-content-center align-items-center me-3" style="width: 40px; height: 40px; background-color: rgba(13, 110, 253, 0.1); color: #0d6efd;">
+                         <i class="bi bi-lock fs-5"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold profile-text-primary mb-0">Security</h5>
+                        <small class="profile-text-secondary">Update your password</small>
+                    </div>
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="password_change" value="true">
+                    
+                    {% if password_form.errors %}
+                        <div class="alert alert-danger">
+                            {{ password_form.errors }}
+                        </div>
+                    {% endif %}
+                    
+                    {% for field in password_form %}
+                        <div class="mb-3">
+                            <label class="form-label profile-label fw-bold small">{{ field.label }}</label>
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" class="form-control profile-input" style="background-color: var(--social-input-bg); border-color: var(--social-border-color); color: var(--profile-text-primary);">
+                            {% if field.help_text %}
+                                <div class="form-text profile-text-secondary small">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    <button type="submit" class="btn btn-dark mt-2 profile-edit-btn px-3">Update Password</button>
+                </form>
             </div>
         </div>
     </div>

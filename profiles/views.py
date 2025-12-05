@@ -3,10 +3,24 @@ from django.contrib.auth.decorators import login_required
 from .models import Profile
 from .forms import UserUpdateForm, ProfileUpdateForm
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 @login_required
 def profile_view(request):
-    return render(request, 'profiles/profile.html')
+    if request.method == 'POST' and 'password_change' in request.POST:
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        password_form = PasswordChangeForm(request.user)
+        
+    return render(request, 'profiles/profile.html', {'password_form': password_form})
 
 @login_required
 def edit_profile(request):

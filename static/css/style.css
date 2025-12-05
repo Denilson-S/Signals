@@ -117,6 +117,19 @@ body {
     transition: background-color 0.3s;
 }
 
+.profile-input {
+    background-color: var(--social-input-bg) !important;
+    border-color: var(--social-border-color) !important;
+    color: var(--profile-text-primary) !important;
+}
+
+.profile-input:focus {
+    background-color: var(--social-input-bg) !important;
+    border-color: var(--social-active-text) !important;
+    color: var(--profile-text-primary) !important;
+    box-shadow: none;
+}
+
 .profile-banner {
     background-color: var(--profile-banner-bg);
     transition: background-color 0.3s;
