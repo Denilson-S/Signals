@@ -50,7 +50,7 @@
         </div>
 
         <!-- Chat Area -->
-        <div class="col-md-8 col-lg-9 flex-column h-100 {% if active_chat %}d-flex{% else %}d-none d-md-flex{% endif %}" style="background-color: var(--social-body-bg);">
+        <div class="col-md-8 col-lg-9 flex-column h-100 {% if active_chat %}d-flex{% else %}d-none d-md-flex{% endif %}" style="background-color: var(--social-body-bg); max-height: 85vh!important;">
             {% if active_chat %}
             <!-- Chat Header -->
             <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: var(--social-sidebar-bg);">
@@ -80,7 +80,7 @@
                         <!-- Sent Message -->
                         <div class="d-flex justify-content-end mb-3">
                             <div class="d-flex flex-column align-items-end">
-                                <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; max-width: 70%;">
+                                <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; width: fit-content;">
                                     <p class="mb-0">{{ message.content }}</p>
                                 </div>
                                 <small class="text-muted" style="font-size: 10px;">{{ message.timestamp|time:"h:i A" }}</small>
@@ -97,7 +97,7 @@
                                 {% endif %}
                             </div>
                             <div class="d-flex flex-column align-items-start">
-                                <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); max-width: 70%;">
+                                <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); width: fit-content;">
                                     <p class="mb-0">{{ message.content }}</p>
                                 </div>
                                 <small class="text-muted ms-3" style="font-size: 10px;">{{ message.timestamp|time:"h:i A" }}</small>
@@ -166,7 +166,7 @@
                 messageHtml = `
                     <div class="d-flex justify-content-end mb-3">
                         <div class="d-flex flex-column align-items-end">
-                            <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; max-width: 70%;">
+                            <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; width: fit-content;">
                                 <p class="mb-0">${message}</p>
                             </div>
                             <small class="text-muted" style="font-size: 10px;">${timestamp}</small>
@@ -187,7 +187,7 @@
                             ${avatarHtml}
                         </div>
                         <div class="d-flex flex-column align-items-start">
-                            <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); max-width: 70%;">
+                            <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); width: fit-content;">
                                 <p class="mb-0">${message}</p>
                             </div>
                             <small class="text-muted ms-3" style="font-size: 10px;">${timestamp}</small>
