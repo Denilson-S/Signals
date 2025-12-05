@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - Signals{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+            <!-- Header -->
+            <div class="mb-4">
+                <h2 class="fw-bold profile-text-primary">Profile</h2>
+                <p class="profile-text-secondary">Manage your personal information.</p>
+            </div>
+
+            <!-- Profile Card -->
+            <div class="card border-0 shadow-sm profile-card overflow-hidden" style="border-radius: 16px;">
+                <!-- Banner Area -->
+                <div class="profile-banner" style="height: 180px;"></div>
+                
+                <div class="card-body px-4 pb-4 pt-0 position-relative">
+                    <!-- Avatar Section - Overlapping Banner -->
+                    <div class="d-flex justify-content-between align-items-end mb-4" style="margin-top: -50px;">
+                        <div class="position-relative">
+                            <div class="rounded-4 overflow-hidden border border-4 profile-avatar-border" style="width: 100px; height: 100px;">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="w-100 h-100 object-fit-cover">
+                                {% else %}
+                                    <!-- Placeholder Grid Avatar as seen in image -->
+                                    <div class="w-100 h-100 bg-light d-flex flex-wrap">
+                                        <div class="w-50 h-50 bg-secondary"></div>
+                                        <div class="w-50 h-50 bg-dark"></div>
+                                        <div class="w-50 h-50 bg-info"></div>
+                                        <div class="w-50 h-50 bg-warning"></div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Edit Button -->
+                        <a href="{% url 'edit_profile' %}" class="btn btn-light fw-semibold px-3 py-2 profile-edit-btn">
+                            Edit Profile
+                        </a>
+                    </div>
+
+                    <!-- Info Grid -->
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="small text-uppercase fw-bold profile-label mb-1">Display Name</label>
+                            <h5 class="fw-bold profile-text-primary mb-0">{{ user.get_full_name|default:"Guest User" }}</h5>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="small text-uppercase fw-bold profile-label mb-1">Handle</label>
+                            <h5 class="profile-text-secondary fw-normal mb-0">@{{ user.username }}</h5>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="small text-uppercase fw-bold profile-label mb-1">Bio</label>
+                            <p class="profile-text-primary mb-0 fs-5">
+                                {{ user.profile.bio|default:"Digital explorer & minimalist enthusiast. Building things for the web." }}
+                            </p>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="small text-uppercase fw-bold profile-label mb-1">Birth Date</label>
+                            <div class="d-flex align-items-center profile-text-secondary">
+                                <i class="bi bi-calendar4-event me-2"></i>
+                                <span>{{ user.profile.birth_date|date:"d \d\e F \d\e Y"|default:"14 de agosto de 1995" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

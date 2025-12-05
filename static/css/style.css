@@ -9,6 +9,16 @@
   --social-border-color: rgba(0, 0, 0, .1);
   --social-menu-border: transparent; 
   --social-input-bg: #f0f2f5; /* Light grey for inputs */
+  
+  /* Profile - Light Mode Specifics */
+  --profile-bg: #f0f2f5;
+  --profile-card-bg: #ffffff;
+  --profile-banner-bg: #dbeafe; /* Light blue banner */
+  --profile-text-primary: #050505;
+  --profile-text-secondary: #65676b;
+  --profile-avatar-border: #ffffff;
+  --profile-edit-btn-bg: #e4e6eb;
+  --profile-edit-btn-text: #050505;
 }
 
 [data-bs-theme="dark"] {
@@ -29,6 +39,16 @@
   --bs-card-border-color: #2f3031;
   --bs-border-color: #2f3031; /* General borders */
   --social-input-bg: #3a3b3c; /* Darker grey for inputs in dark mode */
+
+  /* Profile - Dark Mode Specifics */
+  --profile-bg: #020202;
+  --profile-card-bg: #18191a; /* Dark card */
+  --profile-banner-bg: #081c34; /* Dark blue banner */
+  --profile-text-primary: #e4e6eb;
+  --profile-text-secondary: #b0b3b8;
+  --profile-avatar-border: #18191a;
+  --profile-edit-btn-bg: #3a3b3c;
+  --profile-edit-btn-text: #e4e6eb;
 }
 
 /* Force card background in dark mode with high specificity */
@@ -89,6 +109,49 @@ body {
   background-color: var(--social-sidebar-bg);
   transition: background-color 0.3s, box-shadow 0.3s;
 }
+
+/* Profile Page Styles */
+.profile-card {
+    background-color: var(--profile-card-bg) !important;
+    color: var(--profile-text-primary);
+    transition: background-color 0.3s;
+}
+
+.profile-banner {
+    background-color: var(--profile-banner-bg);
+    transition: background-color 0.3s;
+}
+
+.profile-text-primary {
+    color: var(--profile-text-primary) !important;
+}
+
+.profile-text-secondary {
+    color: var(--profile-text-secondary) !important;
+}
+
+.profile-label {
+    color: var(--profile-text-secondary);
+    letter-spacing: 0.5px;
+    font-size: 0.75rem;
+}
+
+.profile-avatar-border {
+    border-color: var(--profile-card-bg) !important; /* Match card bg for cutout effect */
+    transition: border-color 0.3s;
+}
+
+.profile-edit-btn {
+    background-color: var(--profile-edit-btn-bg) !important;
+    color: var(--profile-edit-btn-text) !important;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.profile-edit-btn:hover {
+    opacity: 0.9;
+}
+
 
 .brand-logo {
   font-family: 'Lobster', cursive;

@@ -1,42 +1,30 @@
-from django.shortcuts import render
-from django.shortcuts import get_object_or_404
-from django import forms
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Profile
+from .forms import UserUpdateForm, ProfileUpdateForm
+from django.contrib import messages
 
-# Create your views here.
-class ProfileForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        fields = '__all__'
+@login_required
+def profile_view(request):
+    return render(request, 'profiles/profile.html')
 
-def profile_detail(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    return render(request, 'profiles/detail.html', {'profile': profile})
-
-def profile_create(request):
+@login_required
+def edit_profile(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES or None)
-        if form.is_valid():
-            profile = form.save()
-            return render(request, 'profiles/detail.html', {'profile': profile})
+        user_form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return redirect('profile')
     else:
-        form = ProfileForm()
-    return render(request, 'profiles/form.html', {'form': form})
+        user_form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
 
-def profile_update(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES or None, instance=profile)
-        if form.is_valid():
-            profile = form.save()
-            return render(request, 'profiles/detail.html', {'profile': profile})
-    else:
-        form = ProfileForm(instance=profile)
-    return render(request, 'profiles/form.html', {'form': form, 'profile': profile})
-
-def profile_delete(request, pk):
-    profile = get_object_or_404(Profile, pk=pk)
-    if request.method == 'POST':
-        profile.delete()
-        return render(request, 'profiles/deleted.html')
-    return render(request, 'profiles/confirm_delete.html', {'profile': profile})
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'profiles/edit_profile.html', context)
