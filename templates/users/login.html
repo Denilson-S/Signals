@@ -1,0 +1,46 @@
+{% extends 'auth_base.html' %}
+
+{% block title %}Log In - Signals{% endblock %}
+
+{% block content %}
+<div class="container auth-container">
+    <div class="row align-items-center">
+        <div class="col-md-7 pe-md-5 mb-5 mb-md-0 text-center text-md-start">
+            <h1 class="brand-logo-big">social</h1>
+            <h2 class="brand-slogan mt-2">Connect with friends and the world around you on Social.</h2>
+        </div>
+        <div class="col-md-5">
+            <div class="auth-card">
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- We will manually render fields to match the specific styling -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger py-2 mb-3 text-center" style="font-size: 14px;">
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-0">
+                        <input type="text" name="username" class="form-control-auth" placeholder="Email or phone number" required autofocus>
+                    </div>
+                    <div class="mb-2 position-relative">
+                        <input type="password" name="password" class="form-control-auth" placeholder="Password" required>
+                        <!-- Eye icon could go here if we added JS for it, keeping it simple for now as per standard Django -->
+                    </div>
+
+                    <button type="submit" class="btn btn-auth-primary">Log In</button>
+                    
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                    
+                    <div class="auth-divider"></div>
+                    
+                    <a href="{% url 'register' %}" class="btn btn-auth-success text-decoration-none">Create new account</a>
+                </form>
+            </div>
+            <div class="mt-4 text-center">
+                <p style="font-size: 14px; color: #fff;"><a href="#" class="text-decoration-none fw-bold text-white">Create a Page</a> for a celebrity, brand or business.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

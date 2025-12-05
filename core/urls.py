@@ -21,6 +21,7 @@ from posts.views import feed_view as feed
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', feed, name='home'),
+    path("users/", include("users.urls")),
     path("comments/", include("comments.urls")),
     path("messages/", include("u_messages.urls")),
     path("profiles/", include("profiles.urls")),

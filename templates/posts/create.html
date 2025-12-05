@@ -1,87 +1,99 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Home - Signals{% endblock %}
+{% block title %}Create Post - Signals{% endblock %}
 
 {% block content %}
-<!-- Feed -->
-{% for post in posts %}
-<div class="card mb-4 border-0 shadow-sm" style="border-radius: 10px;">
-    <div class="card-body p-3">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-start mb-2">
-            <div class="d-flex align-items-center">
-                <!-- Avatar -->
-                <div class="rounded-circle bg-secondary overflow-hidden me-2" style="width: 40px; height: 40px;">
-                    {% if post.author.profile.avatar %}
-                        <img src="{{ post.author.profile.avatar.url }}" alt="{{ post.author.username }}" class="w-100 h-100 object-fit-cover">
-                    {% else %}
-                        <!-- Avatar Placeholder if no image -->
-                         <div class="w-100 h-100 d-flex justify-content-center align-items-center bg-light text-secondary">
-                            <i class="bi bi-person-fill fs-4"></i>
-                         </div>
-                    {% endif %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Post Creation Card -->
+            <div class="card border-0 shadow-lg" style="background-color: #18191a; border-radius: 10px;">
+                <div class="card-body p-4">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="d-flex align-items-center mb-3">
+                            <!-- User Avatar -->
+                            <div class="me-3">
+                                {% if user.profile.avatar %}
+                                    <img src="{{ user.profile.avatar.url }}" alt="{{ user.username }}" class="rounded-circle object-fit-cover" width="50" height="50">
+                                {% else %}
+                                    <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-person-fill fs-4"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Input Field -->
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    {{ form.content }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tag Section -->
+                        <div class="d-flex align-items-center ms-5 ps-3 mb-3">
+                            <i class="bi bi-tag-fill text-primary fs-5 me-2"></i>
+                            <span class="text-white fw-semibold me-3">Tag</span>
+                            <div class="flex-grow-1">
+                                {{ form.tags }}
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end border-top border-secondary pt-3 mt-2">
+                            <button type="submit" class="btn btn-primary px-4 fw-bold rounded-pill">Post</button>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- User Info -->
-                <div style="line-height: 1.2;">
-                    <h6 class="fw-bold mb-0">{{ post.author.get_full_name|default:post.author.username }}</h6>
-                    <small class="text-muted" style="font-size: 12px;">
-                        {{ post.created_at|timesince }} ago &middot; <i class="bi bi-globe-americas"></i>
-                    </small>
-                </div>
             </div>
-            
-            <!-- Menu Button -->
-            <button class="btn btn-link text-body p-0 text-decoration-none">
-                <i class="bi bi-three-dots"></i>
-            </button>
-        </div>
-
-        <!-- Content -->
-        <div class="mb-2">
-            <p class="card-text mb-1">{{ post.content|linebreaksbr }}</p>
-            <!-- Static hashtags for style demo as we can't parse easily without filter, 
-                 or we assume content contains them. 
-                 Adding a dummy line if content doesn't have tags to match the "look" or just rely on content. 
-                 The prompt asked to follow details strictly. 
-                 If the post object doesn't have tags, we can't invent them, but the design should support them. 
-                 I'll add a class for hashtags styling if I could, but for now just standard text. -->
-        </div>
-
-        <!-- Stats -->
-        <div class="d-flex justify-content-between align-items-center py-2">
-            <div class="d-flex align-items-center">
-                <span class="bg-primary text-white rounded-circle d-flex justify-content-center align-items-center me-1" style="width: 18px; height: 18px; font-size: 10px;">
-                    <i class="bi bi-hand-thumbs-up-fill"></i>
-                </span>
-                <span class="text-muted small">{{ post.likes.count }}</span>
-            </div>
-            <div class="text-muted small">
-                <span class="me-2">{{ post.comments.count }} comment{{ post.comments.count|pluralize }}</span>
-                <span>{{ post.shares.count }} share{{ post.shares.count|pluralize }}</span>
-            </div>
-        </div>
-
-        <hr class="my-2 text-muted" style="opacity: 0.15;">
-
-        <!-- Actions -->
-        <div class="d-flex justify-content-between px-2">
-            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
-                <i class="bi bi-hand-thumbs-up"></i> Like
-            </button>
-            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
-                <i class="bi bi-chat-right"></i> Comment
-            </button>
-            <button class="btn btn-link text-decoration-none text-muted fw-semibold d-flex align-items-center gap-2 p-1">
-                <i class="bi bi-share"></i> Share
-            </button>
         </div>
     </div>
 </div>
-{% empty %}
-<div class="text-center py-5">
-    <i class="bi bi-journal-x display-4 text-muted"></i>
-    <p class="mt-3 text-muted">No posts available.</p>
-</div>
-{% endfor %}
+
+<style>
+    /* Specific styles to match the dark theme image */
+    body {
+        background-color: #000 !important; /* Ensure background matches the deep dark of the image */
+    }
+    .card {
+        background-color: #18191a !important; /* Facebook dark mode card color */
+    }
+    
+    /* Style the content textarea to look like a pill/input */
+    #id_content {
+        background-color: #242526 !important; /* Slightly lighter than card */
+        color: #e4e6eb !important;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 20px;
+        width: 100%;
+        outline: none;
+    }
+    #id_content::placeholder {
+        color: #b0b3b8;
+    }
+    #id_content:focus {
+        background-color: #242526 !important;
+        color: #e4e6eb !important;
+        box-shadow: none;
+    }
+
+    /* Style the tags select */
+    #id_tags {
+        background-color: #242526 !important;
+        color: #e4e6eb !important;
+        border: 1px solid #3e4042;
+        border-radius: 8px;
+        padding: 5px;
+        width: 100%;
+    }
+    
+    /* Scrollbar for select if needed */
+    #id_tags option {
+        background-color: #242526;
+        color: #e4e6eb;
+    }
+</style>
 {% endblock %}
