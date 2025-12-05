@@ -28,6 +28,7 @@ urlpatterns = [
     path("messages/", include("u_messages.urls")),
     path("profiles/", include("profiles.urls")),
     path("posts/", include("posts.urls")),
+    path("tags/", include("tags.urls")),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm profile-card" style="border-radius: 16px;">
+                <div class="card-header bg-transparent border-0 pt-4 ps-4">
+                    <h4 class="fw-bold profile-text-primary">{{ title }}</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <label class="form-label profile-label small fw-bold">Tag Name</label>
+                            <input type="text" name="name" value="{{ form.name.value|default:'' }}" class="form-control profile-input" placeholder="e.g. Technology" required>
+                            {% if form.name.errors %}
+                            <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text profile-text-secondary small">Name of the tag to be used in posts.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% url 'dashboard_tags' %}" class="btn btn-link text-decoration-none text-secondary fw-semibold">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold rounded-pill">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

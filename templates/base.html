@@ -46,7 +46,7 @@
             </li>
             {% if user.is_authenticated and user.is_staff %}
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link {% if '/tags/dashboard/' in request.path %}active{% endif %}" href="{% url 'dashboard_tags' %}">
                 <i class="bi bi-columns"></i>
                 Dashboard
               </a>
@@ -95,7 +95,7 @@
                     <i class="bi bi-person fs-2"></i>
                 </a>
                 {% if user.is_authenticated and user.is_staff %}
-                <a class="nav-link text-body" href="#">
+                <a class="nav-link {% if '/tags/dashboard/' in request.path %}active text-primary{% else %}text-body{% endif %}" href="{% url 'dashboard_tags' %}">
                     <i class="bi bi-columns fs-2"></i>
                 </a>
                 {% endif %}
