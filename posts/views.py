@@ -40,8 +40,11 @@ def create_post(request):
         form.fields['content'].widget.attrs['placeholder'] = f"What's on your mind, {user_name}?"
     return render(request, 'posts/create.html', {'form': form})
 
+@login_required
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if request.user != post.author:
+        return redirect('index')
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
@@ -51,9 +54,19 @@ def edit_post(request, pk):
         form = PostForm(instance=post)
     return render(request, 'posts/edit.html', {'form': form, 'post': post})
 
+@login_required
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        post.delete()
-        return redirect('index')
+    if request.user == post.author:
+        if request.method == 'POST':
+            post.delete()
+    return redirect('index')
 
+@login_required
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('index')
