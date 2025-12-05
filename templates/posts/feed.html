@@ -27,6 +27,9 @@
                     <h6 class="fw-bold mb-0">{{ post.author.get_full_name|default:post.author.username }}</h6>
                     <small class="text-muted" style="font-size: 12px;">
                         {{ post.created_at|timesince }} ago &middot; <i class="bi bi-globe-americas"></i>
+                        {% if post.is_edited %}
+                            <span class="text-muted" style="font-size: 12px;">(Edited)</span>
+                        {% endif %}
                     </small>
                 </div>
             </div>

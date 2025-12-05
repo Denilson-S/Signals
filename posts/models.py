@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 # Create your models here.
 class Post(models.Model):
@@ -10,5 +11,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def is_edited(self):
+        return self.updated_at > self.created_at + datetime.timedelta(seconds=1)
+
     def __str__(self):
-        return self.author.get_full_name() or self.author.email
+        return f'Post by {self.author.username} at {self.created_at}'
