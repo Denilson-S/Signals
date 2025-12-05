@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Comment - Signals{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg" style="background-color: #18191a; border-radius: 10px;">
+                <div class="card-header border-0 bg-transparent pt-4 ps-4">
+                    <h5 class="text-white fw-bold">Edit Comment</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <!-- Manually rendering field to ensure styling matches dark theme -->
+                            <textarea name="content" rows="3" class="form-control border-0 text-white" style="background-color: #242526; resize: none;" required>{{ form.content.value }}</textarea>
+                        </div>
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="/" class="btn btn-link text-decoration-none text-secondary fw-semibold">Cancel</a>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold rounded-pill">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -95,12 +95,35 @@
                 </div>
                 <!-- Bubble container -->
                 <div class="flex-grow-1">
-                    <div class="p-3 rounded-4" style="background-color: var(--social-sidebar-hover);">
-                        <h6 class="fw-bold mb-1 fs-6">{{ comment.author.get_full_name|default:comment.author.username }}</h6>
-                        <p class="mb-0 small">{{ comment.content|linebreaksbr }}</p>
+                    <div class="p-3 rounded-4 position-relative" style="background-color: var(--social-sidebar-hover);">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h6 class="fw-bold mb-1 fs-6">{{ comment.author.get_full_name|default:comment.author.username }}</h6>
+                                <p class="mb-0 small">{{ comment.content|linebreaksbr }}</p>
+                            </div>
+                            {% if request.user == comment.author %}
+                            <div class="dropdown">
+                                <button class="btn btn-link text-muted p-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
+                                    <li><a class="dropdown-item small" href="{% url 'edit_comment' comment.pk %}">Edit</a></li>
+                                    <li>
+                                        <form action="{% url 'delete_comment' comment.pk %}" method="post" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item small text-danger bg-transparent border-0 w-100 text-start">Delete</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="d-flex align-items-center mt-1 ms-2">
                         <small class="text-muted me-3" style="font-size: 12px;">{{ comment.created_at|timesince }} ago</small>
+                        {% if comment.is_edited %}
+                            <small class="text-muted" style="font-size: 12px;">(Edited)</small>
+                        {% endif %}
                     </div>
                 </div>
             </div>
