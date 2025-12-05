@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from users.models import User
@@ -71,3 +71,26 @@ def search_users(request):
             })
         return JsonResponse({'results': results})
     return JsonResponse({'results': []})
+
+@login_required
+def delete_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    receiver_id = message.receiver.id
+    if request.user == message.sender:
+        message.delete()
+    return redirect('chat_with_user', user_id=receiver_id)
+
+@login_required
+def edit_message(request, message_id):
+    message = get_object_or_404(Message, id=message_id)
+    if request.user != message.sender:
+        return redirect('chat_index')
+    
+    if request.method == 'POST':
+        new_content = request.POST.get('content')
+        if new_content:
+            message.content = new_content
+            message.save()
+            return redirect('chat_with_user', user_id=message.receiver.id)
+            
+    return render(request, 'messages/edit_message.html', {'message': message})
