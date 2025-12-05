@@ -1,6 +1,8 @@
 # Rede social simplificada
 
-Projeto de rede social simplificada para atender aos requisitos do trabalho final da disciplina Web1. Permite cadastro/login, criação de posts, comentários e curtidas, com foco em aplicar na prática os conceitos apredidos em sala de aula.
+Projeto de rede social simplificada para atender aos requisitos do trabalho final da disciplina Web I, desenvolvido individualmente por Denilson Silva Lima. Permite cadastro/login, criação de posts, comentários e curtidas, com foco em aplicar na prática os conceitos apredidos em sala de aula.
+
+## Link para o vídeo com descrição do projeto
 
 ## Requisitos
 
