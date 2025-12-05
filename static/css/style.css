@@ -93,8 +93,12 @@ body {
     padding: 5px;
 }
 #id_tags option {
-    background-color: var(--bs-body-bg); /* Keep dropdown options readable */
+    background-color: var(--bs-body-bg);
     color: var(--social-text-color);
+}
+#id_tags option:checked {
+    background-color: var(--social-active-bg); /* Use active background color */
+    color: var(--social-active-text); /* Use active text color */
 }
 
 /* Sidebar Styles */
