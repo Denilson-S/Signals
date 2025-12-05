@@ -8,7 +8,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <!-- Post Creation Card -->
-            <div class="card border-0 shadow-lg" style="background-color: #18191a; border-radius: 10px;">
+            <div class="card border-0 shadow-lg" style="border-radius: 10px;">
                 <div class="card-body p-4">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -35,7 +35,7 @@
                         <!-- Tag Section -->
                         <div class="d-flex align-items-center ms-5 ps-3 mb-3">
                             <i class="bi bi-tag-fill text-primary fs-5 me-2"></i>
-                            <span class="text-white fw-semibold me-3">Tag</span>
+                            <span class="fw-semibold me-3">Tag</span>
                             <div class="flex-grow-1">
                                 {{ form.tags }}
                             </div>
@@ -52,48 +52,4 @@
     </div>
 </div>
 
-<style>
-    /* Specific styles to match the dark theme image */
-    body {
-        background-color: #000 !important; /* Ensure background matches the deep dark of the image */
-    }
-    .card {
-        background-color: #18191a !important; /* Facebook dark mode card color */
-    }
-    
-    /* Style the content textarea to look like a pill/input */
-    #id_content {
-        background-color: #242526 !important; /* Slightly lighter than card */
-        color: #e4e6eb !important;
-        border: none;
-        border-radius: 20px;
-        padding: 10px 20px;
-        width: 100%;
-        outline: none;
-    }
-    #id_content::placeholder {
-        color: #b0b3b8;
-    }
-    #id_content:focus {
-        background-color: #242526 !important;
-        color: #e4e6eb !important;
-        box-shadow: none;
-    }
-
-    /* Style the tags select */
-    #id_tags {
-        background-color: #242526 !important;
-        color: #e4e6eb !important;
-        border: 1px solid #3e4042;
-        border-radius: 8px;
-        padding: 5px;
-        width: 100%;
-    }
-    
-    /* Scrollbar for select if needed */
-    #id_tags option {
-        background-color: #242526;
-        color: #e4e6eb;
-    }
-</style>
 {% endblock %}

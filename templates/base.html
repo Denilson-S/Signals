@@ -21,7 +21,7 @@
           
           <ul class="nav flex-column nav-pills">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">
                 <i class="bi bi-house-door-fill"></i>
                 Home
               </a>
@@ -39,7 +39,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/posts/create/">
+              <a class="nav-link {% if request.path == '/posts/create/' %}active{% endif %}" href="/posts/create/">
                 <i class="bi bi-plus-square"></i>
                 Create
               </a>
@@ -82,13 +82,13 @@
         <!-- Bottom Bar (Mobile) -->
         <nav class="navbar fixed-bottom border-top d-md-none" style="background-color: var(--social-sidebar-bg);">
             <div class="container-fluid justify-content-around">
-                <a class="nav-link active text-primary" href="/">
+                <a class="nav-link {% if request.path == '/' %}active text-primary{% else %}text-body{% endif %}" href="/">
                     <i class="bi bi-house-door-fill fs-2"></i>
                 </a>
                 <a class="nav-link text-body" href="#">
                     <i class="bi bi-chat fs-2"></i>
                 </a>
-                <a class="nav-link text-body" href="/posts/create/">
+                <a class="nav-link {% if request.path == '/posts/create/' %}active text-primary{% else %}text-body{% endif %}" href="/posts/create/">
                     <i class="bi bi-plus-square fs-2"></i>
                 </a>
                 <a class="nav-link text-body" href="#">

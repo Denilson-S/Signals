@@ -16,7 +16,7 @@ class PostForm(forms.ModelForm):
         fields = ['content', 'tags']
         widgets = {
             'content': forms.Textarea(attrs={
-                'class': 'form-control border-0 bg-transparent text-white', 
+                'class': 'form-control border-0', 
                 'placeholder': "What's on your mind?", 
                 'rows': 2, 
                 'style': 'resize: none;'

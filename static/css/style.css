@@ -8,6 +8,7 @@
   --social-active-text: #1877f2;
   --social-border-color: rgba(0, 0, 0, .1);
   --social-menu-border: transparent; 
+  --social-input-bg: #f0f2f5; /* Light grey for inputs */
 }
 
 [data-bs-theme="dark"] {
@@ -27,6 +28,7 @@
   --bs-card-bg: #242526; /* Facebook dark mode card color */
   --bs-card-border-color: #2f3031;
   --bs-border-color: #2f3031; /* General borders */
+  --social-input-bg: #3a3b3c; /* Darker grey for inputs in dark mode */
 }
 
 /* Force card background in dark mode with high specificity */
@@ -39,6 +41,40 @@ body {
   color: var(--social-text-color);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   transition: background-color 0.3s, color 0.3s;
+}
+
+/* Styling for content and tags in create post form */
+#id_content,
+#id_tags {
+    background-color: var(--social-input-bg); /* Use specific input background */
+    color: var(--social-text-color);
+    border: none; /* Remove border for pill look */
+    border-radius: 20px; /* For content field */
+    padding: 10px 20px;
+    width: 100%;
+    outline: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+#id_content::placeholder {
+    color: var(--social-text-color); /* Placeholder color from theme */
+    opacity: 0.7; /* Make it a bit lighter */
+}
+
+#id_content:focus,
+#id_tags:focus {
+    box-shadow: none;
+    border-color: var(--social-active-text); /* Highlight focus with active color */
+}
+
+/* Specific styling for tags select */
+#id_tags {
+    border-radius: 8px; /* Different border-radius for select */
+    padding: 5px;
+}
+#id_tags option {
+    background-color: var(--bs-body-bg); /* Keep dropdown options readable */
+    color: var(--social-text-color);
 }
 
 /* Sidebar Styles */
