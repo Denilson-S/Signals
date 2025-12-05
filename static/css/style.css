@@ -56,6 +56,10 @@ html[data-bs-theme="dark"] .card {
     background-color: #242526 !important;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   background-color: var(--social-body-bg);
   color: var(--social-text-color);

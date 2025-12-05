@@ -45,7 +45,7 @@ def chat_view(request, user_id=None):
     context = {
         'recent_users': recent_users,
         'active_chat': active_chat,
-        'messages': messages,
+        'chat_messages': messages,
         'all_users': users # For search
     }
     return render(request, 'messages/chat.html', context)

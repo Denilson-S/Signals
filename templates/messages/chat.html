@@ -7,7 +7,7 @@
 <div class="container-fluid p-0" style="height: calc(100vh - 80px);">
     <div class="row g-0 h-100">
         <!-- Sidebar (Conversations) -->
-        <div class="col-md-4 col-lg-3 border-end d-flex flex-column" style="background-color: var(--social-sidebar-bg);">
+        <div class="col-md-4 col-lg-3 border-end flex-column {% if active_chat %}d-none d-md-flex{% else %}d-flex{% endif %}" style="background-color: var(--social-sidebar-bg);">
             <div class="p-3 border-bottom">
                 <h4 class="fw-bold mb-3" style="color: var(--profile-text-primary);">Chats</h4>
                 <div class="position-relative">
@@ -50,11 +50,12 @@
         </div>
 
         <!-- Chat Area -->
-        <div class="col-md-8 col-lg-9 d-flex flex-column" style="background-color: var(--social-body-bg);">
+        <div class="col-md-8 col-lg-9 flex-column h-100 {% if active_chat %}d-flex{% else %}d-none d-md-flex{% endif %}" style="background-color: var(--social-body-bg);">
             {% if active_chat %}
             <!-- Chat Header -->
             <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: var(--social-sidebar-bg);">
                 <div class="d-flex align-items-center">
+                    <a href="{% url 'chat_index' %}" class="btn btn-link text-muted d-md-none me-2 p-0"><i class="bi bi-arrow-left fs-4"></i></a>
                     <div class="me-3">
                         {% if active_chat.profile.avatar %}
                             <img src="{{ active_chat.profile.avatar.url }}" class="rounded-circle object-fit-cover" width="40" height="40">
@@ -74,7 +75,7 @@
 
             <!-- Messages -->
             <div class="flex-grow-1 overflow-auto p-4" id="chat-messages">
-                {% for message in messages %}
+                {% for message in chat_messages %}
                     {% if message.sender == request.user %}
                         <!-- Sent Message -->
                         <div class="d-flex justify-content-end mb-3">
