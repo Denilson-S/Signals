@@ -135,8 +135,11 @@ body {
 }
 
 .profile-banner {
-    background-color: var(--profile-banner-bg);
-    transition: background-color 0.3s;
+    background-color: var(--profile-banner-bg) !important;
+    width: 100%;
+    min-height: 180px;
+    display: block;
+    position: relative;
 }
 
 .profile-text-primary {
