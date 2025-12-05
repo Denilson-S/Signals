@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat - Signals{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0" style="height: calc(100vh - 80px);">
+    <div class="row g-0 h-100">
+        <!-- Sidebar (Conversations) -->
+        <div class="col-md-4 col-lg-3 border-end d-flex flex-column" style="background-color: var(--social-sidebar-bg);">
+            <div class="p-3 border-bottom">
+                <h4 class="fw-bold mb-3" style="color: var(--profile-text-primary);">Chats</h4>
+                <div class="position-relative">
+                    <input type="text" id="user-search-input" class="form-control rounded-pill ps-5 border-0" placeholder="Search Messenger" style="background-color: var(--social-input-bg); color: var(--profile-text-primary);">
+                    <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                    <!-- Search Results Dropdown -->
+                    <div id="search-results" class="position-absolute w-100 mt-2 rounded-3 shadow-lg d-none" style="background-color: var(--profile-card-bg); z-index: 1000;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-grow-1 overflow-auto" id="conversations-list">
+                {% for user in recent_users %}
+                <a href="{% url 'chat_with_user' user.id %}" class="text-decoration-none">
+                    <div class="d-flex align-items-center p-3 hover-bg {% if active_chat.id == user.id %}active-chat{% endif %}" style="cursor: pointer; transition: background-color 0.2s;">
+                        <div class="position-relative me-3">
+                            {% if user.profile.avatar %}
+                                <img src="{{ user.profile.avatar.url }}" class="rounded-circle object-fit-cover" width="50" height="50">
+                            {% else %}
+                                <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-person-fill fs-4"></i>
+                                </div>
+                            {% endif %}
+                            <!-- Online status indicator (mock) -->
+                            <span class="position-absolute bottom-0 end-0 bg-success border border-dark rounded-circle p-1" style="width: 12px; height: 12px;"></span>
+                        </div>
+                        <div class="flex-grow-1 overflow-hidden">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 fw-bold text-truncate" style="color: var(--profile-text-primary);">{{ user.get_full_name|default:user.username }}</h6>
+                                <small class="text-muted" style="font-size: 11px;">Now</small> <!-- Timestamp mock -->
+                            </div>
+                            <p class="text-muted mb-0 small text-truncate">
+                                Open chat to see messages.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="col-md-8 col-lg-9 d-flex flex-column" style="background-color: var(--social-body-bg);">
+            {% if active_chat %}
+            <!-- Chat Header -->
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center" style="background-color: var(--social-sidebar-bg);">
+                <div class="d-flex align-items-center">
+                    <div class="me-3">
+                        {% if active_chat.profile.avatar %}
+                            <img src="{{ active_chat.profile.avatar.url }}" class="rounded-circle object-fit-cover" width="40" height="40">
+                        {% else %}
+                            <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 40px; height: 40px;">
+                                <i class="bi bi-person-fill fs-5"></i>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h6 class="fw-bold mb-0" style="color: var(--profile-text-primary);">{{ active_chat.get_full_name|default:active_chat.username }}</h6>
+                        <small class="text-muted">Active now</small>
+                    </div>
+                </div>
+                <button class="btn btn-link text-muted"><i class="bi bi-three-dots-vertical fs-5"></i></button>
+            </div>
+
+            <!-- Messages -->
+            <div class="flex-grow-1 overflow-auto p-4" id="chat-messages">
+                {% for message in messages %}
+                    {% if message.sender == request.user %}
+                        <!-- Sent Message -->
+                        <div class="d-flex justify-content-end mb-3">
+                            <div class="d-flex flex-column align-items-end">
+                                <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; max-width: 70%;">
+                                    <p class="mb-0">{{ message.content }}</p>
+                                </div>
+                                <small class="text-muted" style="font-size: 10px;">{{ message.timestamp|time:"h:i A" }}</small>
+                            </div>
+                        </div>
+                    {% else %}
+                        <!-- Received Message -->
+                        <div class="d-flex mb-3">
+                            <div class="me-2 flex-shrink-0 align-self-end">
+                                {% if message.sender.profile.avatar %}
+                                    <img src="{{ message.sender.profile.avatar.url }}" class="rounded-circle object-fit-cover" width="28" height="28">
+                                {% else %}
+                                    <div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 28px; height: 28px; font-size: 10px;">{{ message.sender.username|slice:":1" }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-column align-items-start">
+                                <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); max-width: 70%;">
+                                    <p class="mb-0">{{ message.content }}</p>
+                                </div>
+                                <small class="text-muted ms-3" style="font-size: 10px;">{{ message.timestamp|time:"h:i A" }}</small>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3" style="background-color: var(--social-sidebar-bg);">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="position-relative flex-grow-1">
+                        <input type="text" id="chat-input" class="form-control rounded-pill border-0 ps-3 pe-5" placeholder="Aa" style="background-color: var(--social-input-bg); color: var(--profile-text-primary);">
+                        <button class="btn btn-link position-absolute top-50 end-0 translate-middle-y text-primary me-2" id="btn-send">
+                            <i class="bi bi-send-fill fs-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-muted">
+                <i class="bi bi-chat-square-text display-1 mb-3"></i>
+                <h4>Select a chat to start messaging</h4>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-bg:hover {
+        background-color: var(--social-sidebar-hover);
+        border-radius: 10px;
+    }
+    .active-chat {
+        background-color: var(--social-active-bg) !important;
+        border-radius: 10px;
+    }
+</style>
+
+<script>
+    const userId = "{{ active_chat.id }}";
+    const currentUserAvatar = "{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% endif %}";
+    
+    // WebSocket Setup
+    if (userId) {
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + userId + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            const senderId = data.sender_id;
+            const timestamp = data.timestamp;
+            const senderAvatar = data.sender_avatar;
+
+            const messagesContainer = document.getElementById('chat-messages');
+            const isMe = senderId == "{{ request.user.id }}";
+            
+            let messageHtml = '';
+            
+            if (isMe) {
+                messageHtml = `
+                    <div class="d-flex justify-content-end mb-3">
+                        <div class="d-flex flex-column align-items-end">
+                            <div class="p-3 rounded-4 text-white mb-1" style="background-color: #0084ff; max-width: 70%;">
+                                <p class="mb-0">${message}</p>
+                            </div>
+                            <small class="text-muted" style="font-size: 10px;">${timestamp}</small>
+                        </div>
+                    </div>
+                `;
+            } else {
+                let avatarHtml = '';
+                if (senderAvatar) {
+                    avatarHtml = `<img src="${senderAvatar}" class="rounded-circle object-fit-cover" width="28" height="28">`;
+                } else {
+                    avatarHtml = `<div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 28px; height: 28px; font-size: 10px;">U</div>`;
+                }
+
+                messageHtml = `
+                    <div class="d-flex mb-3">
+                        <div class="me-2 flex-shrink-0 align-self-end">
+                            ${avatarHtml}
+                        </div>
+                        <div class="d-flex flex-column align-items-start">
+                            <div class="p-3 rounded-4 mb-1" style="background-color: var(--social-sidebar-hover); color: var(--profile-text-primary); max-width: 70%;">
+                                <p class="mb-0">${message}</p>
+                            </div>
+                            <small class="text-muted ms-3" style="font-size: 10px;">${timestamp}</small>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.insertAdjacentHTML('beforeend', messageHtml);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        // Scroll to bottom on load
+        const messagesContainer = document.getElementById('chat-messages');
+        if(messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        // Send message
+        const input = document.getElementById('chat-input');
+        const btnSend = document.getElementById('btn-send');
+
+        function sendMessage() {
+            const message = input.value;
+            if (message.trim()) {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                input.value = '';
+            }
+        }
+
+        btnSend.onclick = sendMessage;
+        input.onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        };
+    }
+
+    // Search Functionality
+    const searchInput = document.getElementById('user-search-input');
+    const searchResults = document.getElementById('search-results');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value;
+        if (query.length > 0) {
+            fetch(`{% url 'search_users' %}?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    searchResults.innerHTML = '';
+                    if (data.results.length > 0) {
+                        searchResults.classList.remove('d-none');
+                        data.results.forEach(user => {
+                            let avatar = user.avatar ? `<img src="${user.avatar}" class="rounded-circle" width="30" height="30">` : `<div class="rounded-circle bg-secondary d-flex justify-content-center align-items-center text-white" style="width: 30px; height: 30px;">${user.username[0].toUpperCase()}</div>`;
+                            
+                            const item = `
+                                <a href="/messages/${user.id}/" class="d-flex align-items-center p-2 text-decoration-none profile-text-primary hover-bg">
+                                    <div class="me-2">${avatar}</div>
+                                    <div>
+                                        <div class="fw-bold small">${user.name}</div>
+                                        <div class="text-muted small">@${user.username}</div>
+                                    </div>
+                                </a>
+                            `;
+                            searchResults.insertAdjacentHTML('beforeend', item);
+                        });
+                    } else {
+                        searchResults.classList.add('d-none');
+                    }
+                });
+        } else {
+            searchResults.classList.add('d-none');
+        }
+    });
+
+    // Hide search results on click outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+            searchResults.classList.add('d-none');
+        }
+    });
+</script>
+{% endblock %}

@@ -27,7 +27,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link {% if '/messages/' in request.path %}active{% endif %}" href="{% url 'chat_index' %}">
                 <i class="bi bi-chat"></i>
                 Chat
               </a>
@@ -85,7 +85,7 @@
                 <a class="nav-link {% if request.path == '/' %}active text-primary{% else %}text-body{% endif %}" href="/">
                     <i class="bi bi-house-door-fill fs-2"></i>
                 </a>
-                <a class="nav-link text-body" href="#">
+                <a class="nav-link {% if '/messages/' in request.path %}active text-primary{% else %}text-body{% endif %}" href="{% url 'chat_index' %}">
                     <i class="bi bi-chat fs-2"></i>
                 </a>
                 <a class="nav-link {% if request.path == '/posts/create/' %}active text-primary{% else %}text-body{% endif %}" href="/posts/create/">
