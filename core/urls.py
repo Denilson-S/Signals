@@ -19,6 +19,21 @@ from django.urls import path, include
 from posts.views import feed_view as feed
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
+from users.api.viewsets import UserViewSet
+from posts.api.viewsets import PostViewSet
+from comments.api.viewsets import CommentViewSet
+from tags.api.viewsets import TagViewSet
+from profiles.api.viewsets import ProfileViewSet
+from u_messages.api.viewsets import MessageViewSet
+
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'posts', PostViewSet)
+router.register(r'comments', CommentViewSet)
+router.register(r'tags', TagViewSet)
+router.register(r'profiles', ProfileViewSet)
+router.register(r'messages', MessageViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +44,7 @@ urlpatterns = [
     path("profiles/", include("profiles.urls")),
     path("posts/", include("posts.urls")),
     path("tags/", include("tags.urls")),
+    path('api/', include(router.urls)),
 ]
 
 if settings.DEBUG:
